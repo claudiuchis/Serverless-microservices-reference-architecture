@@ -1,10 +1,18 @@
 resources:
-- repo: self
-queue:
-  name: Hosted Linux Preview
-  demands: npm
+  - repo: self
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
 
 steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
 - task: Npm@1
   displayName: 'npm install'
   inputs:

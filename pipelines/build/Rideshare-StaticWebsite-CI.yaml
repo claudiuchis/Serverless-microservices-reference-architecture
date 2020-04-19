@@ -1,42 +1,50 @@
 resources:
   - repo: self
-queue:
-  name: Hosted Linux Preview
-  demands: npm
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
 
 steps:
-  - task: Npm@1
-    displayName: 'npm install'
-    inputs:
-      command: custom
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
 
-      workingDir: 'web/serverless-microservices-web'
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: custom
 
-      verbose: false
+    workingDir: 'web/serverless-microservices-web'
 
-      customCommand: 'install -f'
+    verbose: false
 
-  - task: Npm@1
-    displayName: 'npm run build'
-    inputs:
-      command: custom
+    customCommand: 'install -f'
 
-      workingDir: 'web/serverless-microservices-web'
+- task: Npm@1
+  displayName: 'npm run build'
+  inputs:
+    command: custom
 
-      verbose: false
+    workingDir: 'web/serverless-microservices-web'
 
-      customCommand: 'run build'
+    verbose: false
 
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-    inputs:
-      SourceFolder: 'web/serverless-microservices-web'
+    customCommand: 'run build'
 
-      Contents: 'dist/**'
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: 'web/serverless-microservices-web'
 
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: 'dist/**'
 
-      CleanTargetFolder: true
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: drop'
+    CleanTargetFolder: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'

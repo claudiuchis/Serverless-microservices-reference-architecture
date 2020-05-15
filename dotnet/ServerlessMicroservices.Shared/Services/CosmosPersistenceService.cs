@@ -94,6 +94,13 @@ namespace ServerlessMicroservices.Shared.Services
                 //FeedOptions queryOptions = new FeedOptions { MaxItemCount = max, PartitionKey = new Microsoft.Azure.Documents.PartitionKey(code.ToUpper()) };
                 FeedOptions queryOptions = new FeedOptions { MaxItemCount = max, EnableCrossPartitionQuery = true };
 
+                var docDbName = _settingService.GetDocDbRideShareDatabaseName();
+                var docDbEndpointUrl = _settingService.GetDocDbEndpointUri();
+                var docDbApiKey = _settingService.GetDocDbApiKey();
+                var collectionName = _settingService.GetDocDbMainCollectionName();
+
+                _loggerService.Log($"{LOG_TAG} - docDbName:{docDbName}, docDbEndpointUrl:{docDbEndpointUrl}, docDbApiKey:{docDbApiKey}, collectionName:{collectionName}");
+
                 var query = (await GetDocDBClient(_settingService)).CreateDocumentQuery<DriverItem>(
                                 UriFactory.CreateDocumentCollectionUri(_docDbDatabaseName, _docDbDigitalMainCollectionName), queryOptions)
                                 .Where(e => e.CollectionType == ItemCollectionTypes.Driver)

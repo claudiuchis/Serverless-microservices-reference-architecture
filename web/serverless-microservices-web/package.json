@@ -12,22 +12,22 @@
   "dependencies": {
     "@aspnet/signalr": "^1.0.3",
     "EventEmitter": "^1.0.0",
-    "axios": "^0.18.0",
-    "bootstrap-vue": "^2.0.0-rc.11",
+    "axios": "^0.18.1",
+    "bootstrap-vue": "^2.13.1",
     "msal": "^0.2.2",
-    "vue": "^2.5.17",
+    "signalrcoreclientpreview": "~1.0.0-preview1-t000",
+    "vue": "^2.6.11",
     "vue-blockui": "^1.1.7",
     "vue-flatpickr-component": "^6.2.0",
     "vue-izitoast": "^1.1.0",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "signalrcoreclientpreview": "~1.0.0-preview1-t000"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-eslint": "^3.0.0",
     "@vue/cli-service": "^3.0.0",
     "@vue/eslint-config-standard": "^3.0.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.6.11"
   }
 }

@@ -1,7 +1,7 @@
 // Auth
 window.authClientId = '0f8f9adc-6f4b-4960-a59d-bb31f73ff4d3';
 window.authAuthority = 'https://hailoTenant.b2clogin.com/tfp/hailoTenant.onmicrosoft.com/b2c_1_hailo_default_signin/v2.0';
-window.authScopes = ['rideshare'];
+window.authScopes = ['https://hailoTenant.onmicrosoft.com/api/rideshare'];
 window.authEnabled = true;
 
 // API endpoints

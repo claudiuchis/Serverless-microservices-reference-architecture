@@ -67,9 +67,11 @@ namespace ServerlessMicroservices.Shared.Services
 
         string ExtractBearerToken(HttpRequest request)
         {
+            _loggerService.Log("Entering ExtractBearerToken");
             if (request.Headers.TryGetValue(AuthorizationHeaderName, out var authorization))
             {
                 var header = authorization.FirstOrDefault()?.ToString();
+                _loggerService.Log(header);
                 if (header != null && header.StartsWith(BearerScheme, StringComparison.OrdinalIgnoreCase))
                 {
                     var token = header.Substring(BearerScheme.Length).Trim();
@@ -82,6 +84,7 @@ namespace ServerlessMicroservices.Shared.Services
 
         async Task<ClaimsPrincipal> ValidateJwt(string token)
         {
+            _loggerService.Log("Entering ValidateJwt");
             var validationParams = await GetValidationParameters();
             if (validationParams != null)
             {
@@ -98,7 +101,7 @@ namespace ServerlessMicroservices.Shared.Services
                 }
                 catch (Exception ex)
                 {
-                    //_loggerService.LogError("Token failed to validate: {0}", ex.Message);
+                    _loggerService.Log(ex);
                 }
             }
 

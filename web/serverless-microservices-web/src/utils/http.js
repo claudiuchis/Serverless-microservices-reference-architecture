@@ -34,7 +34,7 @@ function getHeaders (token, apiKey, customHeader) {
   if (customHeader && customHeader !== null) {
     defaultHeaders = { ...defaultHeaders, ...customHeader }
   }
-
+  console.log(defaultHeaders)
   return defaultHeaders
 }
 
@@ -65,7 +65,7 @@ export function processAPIErrors (apiErrors) {
 
       errors[key] = err
 
-      if (typeof err === Object || err.hasOwnProperty('length')) {
+      if (typeof err === 'object' || err.hasOwnProperty('length')) {
         errors[key] = apiErrors[key][0]
       }
     }

@@ -42,6 +42,7 @@ namespace ServerlessMicroservices.Shared.Services
             _settingService = settingService;
             _loggerService = loggerService;
 
+            _loggerService.Log("AuthorityUrl = " + settingService.GetAuthorityUrl());
             _discoveryCache = new DiscoveryCache(settingService.GetAuthorityUrl(), policy: new DiscoveryPolicy
             {
                 ValidateIssuerName = false,
@@ -107,6 +108,7 @@ namespace ServerlessMicroservices.Shared.Services
                 }
                 catch (Exception ex)
                 {
+                    _loggerService.Log("exception caught: " + ex.Message);
                     _loggerService.Log(ex);
                 }
             }

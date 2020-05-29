@@ -550,6 +550,7 @@ namespace ServerlessMicroservices.Shared.Services
             catch (Exception ex)
             {
                 error = ex.Message;
+                _loggerService.Log("RetrieveActiveTripsCount - Error " + error);
                 throw new Exception(error);
             }
             finally

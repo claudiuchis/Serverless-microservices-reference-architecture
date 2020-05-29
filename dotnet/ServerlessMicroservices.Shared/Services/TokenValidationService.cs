@@ -42,7 +42,6 @@ namespace ServerlessMicroservices.Shared.Services
             _settingService = settingService;
             _loggerService = loggerService;
 
-            _loggerService.Log("AuthorityUrl = " + settingService.GetAuthorityUrl());
             _discoveryCache = new DiscoveryCache(settingService.GetAuthorityUrl(), policy: new DiscoveryPolicy
             {
                 ValidateIssuerName = false,
@@ -68,11 +67,9 @@ namespace ServerlessMicroservices.Shared.Services
 
         string ExtractBearerToken(HttpRequest request)
         {
-            _loggerService.Log("Entering ExtractBearerToken");
             if (request.Headers.TryGetValue(AuthorizationHeaderName, out var authorization))
             {
                 var header = authorization.FirstOrDefault()?.ToString();
-                _loggerService.Log(header);
                 if (header != null && header.StartsWith(BearerScheme, StringComparison.OrdinalIgnoreCase))
                 {
                     var token = header.Substring(BearerScheme.Length).Trim();
@@ -85,22 +82,15 @@ namespace ServerlessMicroservices.Shared.Services
 
         async Task<ClaimsPrincipal> ValidateJwt(string token)
         {
-            _loggerService.Log("Entering ValidateJwt");
             var validationParams = await GetValidationParameters();
-            if (validationParams == null){
-                _loggerService.Log("validationParams = null");
-            }
             if (validationParams != null)
             {
-                _loggerService.Log("validationParams not null");
                 var handler = new JwtSecurityTokenHandler();
                 handler.InboundClaimTypeMap.Clear();
 
                 try
                 {
-                    _loggerService.Log("before handler.ValidateToken");
                     var principal = handler.ValidateToken(token, validationParams, out _);
-                    _loggerService.Log("after handler.ValidateToken");
                     if (principal.HasClaim(ScopeClainType, _scope))
                     {
                         return principal;
@@ -112,14 +102,11 @@ namespace ServerlessMicroservices.Shared.Services
                     _loggerService.Log(ex);
                 }
             }
-
-            _loggerService.Log("ValidateJwt - return null");
             return null;
         }
 
         async Task<TokenValidationParameters> GetValidationParameters()
         {
-            _loggerService.Log("Entering GetValidationParameters");
             var disco = await _discoveryCache.GetAsync();
             if (disco.IsError)
             {

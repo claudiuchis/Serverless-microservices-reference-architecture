@@ -86,14 +86,20 @@ namespace ServerlessMicroservices.Shared.Services
         {
             _loggerService.Log("Entering ValidateJwt");
             var validationParams = await GetValidationParameters();
+            if (validationParams == null){
+                _loggerService.Log("validationParams = null");
+            }
             if (validationParams != null)
             {
+                _loggerService.Log("validationParams not null");
                 var handler = new JwtSecurityTokenHandler();
                 handler.InboundClaimTypeMap.Clear();
 
                 try
                 {
+                    _loggerService.Log("before handler.ValidateToken");
                     var principal = handler.ValidateToken(token, validationParams, out _);
+                    _loggerService.Log("after handler.ValidateToken");
                     if (principal.HasClaim(ScopeClainType, _scope))
                     {
                         return principal;
@@ -111,6 +117,7 @@ namespace ServerlessMicroservices.Shared.Services
 
         async Task<TokenValidationParameters> GetValidationParameters()
         {
+            _loggerService.Log("Entering GetValidationParameters");
             var disco = await _discoveryCache.GetAsync();
             if (disco.IsError)
             {

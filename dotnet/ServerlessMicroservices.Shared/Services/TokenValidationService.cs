@@ -94,6 +94,10 @@ namespace ServerlessMicroservices.Shared.Services
                 try
                 {
                     var principal = handler.ValidateToken(token, validationParams, out _);
+                    foreach (Claim claim in principal.Claims)
+                    {
+                        _loggerService.Log(claim.ToString());
+                    }
                     if (principal.HasClaim(ScopeClainType, _scope))
                     {
                         return principal;
@@ -105,6 +109,7 @@ namespace ServerlessMicroservices.Shared.Services
                 }
             }
 
+            _loggerService.Log("ValidateJwt - return null");
             return null;
         }
 

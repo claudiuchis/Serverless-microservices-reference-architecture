@@ -5,8 +5,8 @@ window.authScopes = ['https://hailoTenant.onmicrosoft.com/api/rideshare'];
 window.authEnabled = true;
 
 // API endpoints
-window.apiKey = 'c773dc362db840b7a4e3bae8139c10ed';
-window.apiBaseUrl = 'https://hailo-apim.azure-api.net';
+window.apiKey = 'ece95b5d83b541f18fc4bb49e3bfdb20';
+window.apiBaseUrl = 'https://hailo.azure-api.net';
 window.apiDriversBaseUrl = `${window.apiBaseUrl}/d`;
 window.apiTripsBaseUrl = `${window.apiBaseUrl}/t`;
 window.apiPassengersBaseUrl = `${window.apiBaseUrl}/p`;

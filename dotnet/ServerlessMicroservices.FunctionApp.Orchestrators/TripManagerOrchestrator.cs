@@ -1,5 +1,7 @@
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.WebJobs.Extensions.Storage;
 using ServerlessMicroservices.Models;
 using ServerlessMicroservices.Shared.Helpers;
 using ServerlessMicroservices.Shared.Services;
@@ -16,7 +18,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
     {
         [FunctionName("O_ManageTrip")]
         public static async Task<object> ManageTrip(
-            [OrchestrationTrigger] DurableOrchestrationContext context,
+            [OrchestrationTrigger] IDurableOrchestrationContext context,
             ILogger log)
         {
             TripItem trip = context.GetInput<TripItem>();

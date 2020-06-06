@@ -5,10 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "name": "ServerlessMicroservices.FunctionApp.Orchestrators",
+            "type": "coreclr",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${file}"
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/dotnet/ServerlessMicroservices.FunctionApp.Orchestrators/bin/Debug/netcoreapp2.1/ServerlessMicroservices.FunctionApp.Orchestrators.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/dotnet/ServerlessMicroservices.FunctionApp.Orchestrators",
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }

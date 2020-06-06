@@ -1,4 +1,6 @@
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using ServerlessMicroservices.Models;
 using ServerlessMicroservices.Shared.Services;
@@ -15,7 +17,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
 
         [FunctionName("O_DemoTrip")]
         public static async Task<object> DemoTrip(
-            [OrchestrationTrigger] DurableOrchestrationContext context,
+            [OrchestrationTrigger] IDurableOrchestrationContext context,
             ILogger log)
         {
             TripDemoState state = context.GetInput<TripDemoState>();
@@ -117,7 +119,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
             TripTimeSettings settings = new TripTimeSettings();
             settings.IntervalInSeconds = ServiceFactory.GetSettingService().GetTripMonitorIntervalInSeconds();
             settings.MaxIterations = ServiceFactory.GetSettingService().GetTripMonitorMaxIterations();
-            return settings;
+            return await Task.FromResult(settings);
         }
 
         [FunctionName("A_TD_RetrieveRouteItems")]
@@ -133,7 +135,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
         // Out does does not work in Async methods!!!
         [FunctionName("A_TD_AssignDriver")]
         public static void AssignDriver([ActivityTrigger] TripItem trip,
-            [Queue("trip-drivers", Connection = "AzureWebJobsStorage")] out TripDriver queueInfo,
+            [QueueTrigger("trip-drivers", Connection = "AzureWebJobsStorage")] out TripDriver queueInfo,
             ILogger log)
         {
             log.LogInformation($"AssignDriver for {trip.Code} starting....");

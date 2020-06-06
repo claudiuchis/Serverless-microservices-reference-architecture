@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.WebJobs.Extensions.Storage;
 using Newtonsoft.Json;
 using ServerlessMicroservices.Models;
 using System;
@@ -15,7 +17,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
     {
         [FunctionName("T_StartTripDemoViaQueueTrigger")]
         public static async Task StartTripDemoViaQueueTrigger(
-            [OrchestrationClient] DurableOrchestrationClient context,
+            [DurableClient] IDurableOrchestrationClient context,
             [QueueTrigger("%TripDemosQueue%", Connection = "AzureWebJobsStorage")] TripDemoState demoState,
             ILogger log)
         {
@@ -34,7 +36,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
 
         [FunctionName("T_StartTripDemo")]
         public static async Task<IActionResult> StartTripDemo([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "tripdemos")] HttpRequest req,
-            [OrchestrationClient] DurableOrchestrationClient context,
+            [DurableClient] IDurableOrchestrationClient context,
             ILogger log)
         {
             try
@@ -63,7 +65,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
 
         [FunctionName("T_GetTripDemo")]
         public static async Task<IActionResult> GetTripDemo([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "tripdemos/{code}")] HttpRequest req,
-            [OrchestrationClient] DurableOrchestrationClient context,
+            [DurableClient] IDurableOrchestrationClient context,
             string code,
             ILogger log)
         {
@@ -85,7 +87,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
 
         [FunctionName("T_TerminateTripDemo")]
         public static async Task<IActionResult> TerminateTripDemo([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "tripdemos/{code}/terminate")] HttpRequest req,
-            [OrchestrationClient] DurableOrchestrationClient context,
+            [DurableClient] IDurableOrchestrationClient context,
             string code,
             ILogger log)
         {
@@ -105,7 +107,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
         //TODO: Implement Get Trip Demo Instances, Restart Trip Demo Instances and Terminate Trip Demo Instances if Persist to table storage if persist instances is activated
 
         /** PRIVATE **/
-        private static async Task StartInstance(DurableOrchestrationClient context, TripDemoState state, string instanceId, ILogger log)
+        private static async Task StartInstance(IDurableOrchestrationClient context, TripDemoState state, string instanceId, ILogger log)
         {
             try
             {
@@ -127,7 +129,7 @@ namespace ServerlessMicroservices.FunctionApp.Orchestrators
             }
         }
 
-        private static async Task TeminateInstance(DurableOrchestrationClient context, string instanceId, ILogger log)
+        private static async Task TeminateInstance(IDurableOrchestrationClient context, string instanceId, ILogger log)
         {
             try
             {
